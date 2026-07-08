@@ -23,8 +23,8 @@ st.set_page_config(page_title="DeficiVision Analyzer", page_icon="👁️", layo
 def load_models():
     # --- Auto-Download Weights from GitHub Releases ---
     # PASTE YOUR GITHUB RELEASE LINKS HERE
-    cnn_url = "sha256:0a98af93c04980a9ec4d1a0d3568ec51d5965073bc033068e4545d5579cf392d" 
-    vit_url = "sha256:3e7f1a5aac17edbacf685634cf6e8bbd76fcbb7ec7b1de4f2d283e27df7eb649"
+    cnn_url = "https://github.com/DataPro/Vitamin-App/releases/download/v1.0/cnn_vitamin_model.pth" 
+    vit_url = "https://github.com/DataPro/Vitamin-App/releases/download/v1.0/vit_vitamin_model.pth"
 
     if not os.path.exists('cnn_vitamin_model.pth'):
         st.info("Downloading CNN model... (This only happens once)")
