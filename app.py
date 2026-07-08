@@ -1,3 +1,44 @@
+import os
+import gdown
+
+# ... (Keep your other imports and set_page_config exactly the same) ...
+
+# =====================================================================
+# 1. LOAD THE TRAINED HYBRID MODELS
+# =====================================================================
+@st.cache_resource # Prevents reloading the model every time the app updates
+def load_models():
+    # --- Rebuild CNN Architecture ---
+    cnn = models.resnet50(weights=None)
+    num_features_cnn = cnn.fc.in_features
+    cnn.fc = nn.Sequential(nn.Linear(num_features_cnn, 256), nn.ReLU(), nn.Dropout(0.3), nn.Linear(256, 6))
+    
+    # Auto-Download CNN from Drive if missing
+    if not os.path.exists('cnn_vitamin_model.pth'):
+        # REPLACE THIS ID WITH YOUR ACTUAL CNN DRIVE ID
+        cnn_id = 'https://drive.google.com/file/d/1GXDhdwP2Xmwx_nUt5aYi8Mp4GJ4a_Dqt/view' 
+        gdown.download(id=cnn_id, output='cnn_vitamin_model.pth', quiet=False)
+        
+    cnn.load_state_dict(torch.load('cnn_vitamin_model.pth', map_location=torch.device('cpu'), weights_only=True))
+    cnn.eval()
+
+    # --- Rebuild ViT Architecture ---
+    vit = timm.create_model('vit_base_patch16_224', pretrained=False)
+    num_features_vit = vit.head.in_features
+    vit.head = nn.Sequential(nn.Linear(num_features_vit, 256), nn.ReLU(), nn.Dropout(0.3), nn.Linear(256, 6))
+    
+    # Auto-Download ViT from Drive if missing
+    if not os.path.exists('vit_vitamin_model.pth'):
+        # REPLACE THIS ID WITH YOUR ACTUAL VIT DRIVE ID
+        vit_id = 'https://drive.google.com/file/d/1vHg0QHWgEJJujWsEpD50mdKe5MxpxCHr/view'
+        gdown.download(id=vit_id, output='vit_vitamin_model.pth', quiet=False)
+        
+    vit.load_state_dict(torch.load('vit_vitamin_model.pth', map_location=torch.device('cpu'), weights_only=True))
+    vit.eval()
+    
+    return cnn, vit
+
+# ... (Keep the rest of your code exactly the same) ...
 import streamlit as st
 import streamlit.components.v1 as components
 import torch
