@@ -20,7 +20,7 @@ def load_models():
     # Auto-Download CNN from Drive if missing
     if not os.path.exists('cnn_vitamin_model.pth'):
         # REPLACE THIS ID WITH YOUR ACTUAL CNN DRIVE ID
-        cnn_id = https://drive.google.com/file/d/1GXDhdwP2Xmwx_nUt5aYi8Mp4GJ4a_Dqt/view 
+        cnn_id = 'https://drive.google.com/file/d/1GXDhdwP2Xmwx_nUt5aYi8Mp4GJ4a_Dqt/view'
         gdown.download(id=cnn_id, output='cnn_vitamin_model.pth', quiet=False)
         
     cnn.load_state_dict(torch.load('cnn_vitamin_model.pth', map_location=torch.device('cpu'), weights_only=True))
@@ -34,7 +34,7 @@ def load_models():
     # Auto-Download ViT from Drive if missing
     if not os.path.exists('vit_vitamin_model.pth'):
         # REPLACE THIS ID WITH YOUR ACTUAL VIT DRIVE ID
-        vit_id = https://drive.google.com/file/d/1vHg0QHWgEJJujWsEpD50mdKe5MxpxCHr/view
+        vit_id = 'https://drive.google.com/file/d/1vHg0QHWgEJJujWsEpD50mdKe5MxpxCHr/view'
         gdown.download(id=vit_id, output='vit_vitamin_model.pth', quiet=False)
         
     vit.load_state_dict(torch.load('vit_vitamin_model.pth', map_location=torch.device('cpu'), weights_only=True))
