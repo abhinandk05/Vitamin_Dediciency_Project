@@ -1,28 +1,43 @@
 import os
-import gdown
+import urllib.request
 import streamlit as st
 import streamlit.components.v1 as components
 import torch
 import torch.nn as nn
+from torchvision import models
+import timm
+from PIL import Image
+import torchvision.transforms as transforms
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
 
-# ... (Keep your other imports and set_page_config exactly the same) ...
+# Set up page configurations
+st.set_page_config(page_title="DeficiVision Analyzer", page_icon="👁️", layout="wide")
 
 # =====================================================================
 # 1. LOAD THE TRAINED HYBRID MODELS
 # =====================================================================
-@st.cache_resource # Prevents reloading the model every time the app updates
+@st.cache_resource 
 def load_models():
+    # --- Auto-Download Weights from GitHub Releases ---
+    # PASTE YOUR GITHUB RELEASE LINKS HERE
+    cnn_url = "sha256:0a98af93c04980a9ec4d1a0d3568ec51d5965073bc033068e4545d5579cf392d" 
+    vit_url = "sha256:3e7f1a5aac17edbacf685634cf6e8bbd76fcbb7ec7b1de4f2d283e27df7eb649"
+
+    if not os.path.exists('cnn_vitamin_model.pth'):
+        st.info("Downloading CNN model... (This only happens once)")
+        urllib.request.urlretrieve(cnn_url, 'cnn_vitamin_model.pth')
+        
+    if not os.path.exists('vit_vitamin_model.pth'):
+        st.info("Downloading ViT model... (This only happens once)")
+        urllib.request.urlretrieve(vit_url, 'vit_vitamin_model.pth')
+
     # --- Rebuild CNN Architecture ---
     cnn = models.resnet50(weights=None)
     num_features_cnn = cnn.fc.in_features
     cnn.fc = nn.Sequential(nn.Linear(num_features_cnn, 256), nn.ReLU(), nn.Dropout(0.3), nn.Linear(256, 6))
-    
-    # Auto-Download CNN from Drive if missing
-    if not os.path.exists('cnn_vitamin_model.pth'):
-        # REPLACE THIS ID WITH YOUR ACTUAL CNN DRIVE ID
-        cnn_id = 'https://drive.google.com/file/d/1GXDhdwP2Xmwx_nUt5aYi8Mp4GJ4a_Dqt/view'
-        gdown.download(id=cnn_id, output='cnn_vitamin_model.pth', quiet=False)
-        
     cnn.load_state_dict(torch.load('cnn_vitamin_model.pth', map_location=torch.device('cpu'), weights_only=True))
     cnn.eval()
 
@@ -30,13 +45,6 @@ def load_models():
     vit = timm.create_model('vit_base_patch16_224', pretrained=False)
     num_features_vit = vit.head.in_features
     vit.head = nn.Sequential(nn.Linear(num_features_vit, 256), nn.ReLU(), nn.Dropout(0.3), nn.Linear(256, 6))
-    
-    # Auto-Download ViT from Drive if missing
-    if not os.path.exists('vit_vitamin_model.pth'):
-        # REPLACE THIS ID WITH YOUR ACTUAL VIT DRIVE ID
-        vit_id = 'https://drive.google.com/file/d/1vHg0QHWgEJJujWsEpD50mdKe5MxpxCHr/view'
-        gdown.download(id=vit_id, output='vit_vitamin_model.pth', quiet=False)
-        
     vit.load_state_dict(torch.load('vit_vitamin_model.pth', map_location=torch.device('cpu'), weights_only=True))
     vit.eval()
     
