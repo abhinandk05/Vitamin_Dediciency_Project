@@ -27,8 +27,8 @@ def load_models():
     vit_path = 'vit_vitamin_model.pth'
     
     # ⚠️ PASTE YOUR EXACT GITHUB RELEASE LINKS HERE
-    cnn_url = "https://github.com/YOUR-USERNAME/YOUR-REPO/releases/download/v1.0/cnn_vitamin_model.pth"
-    vit_url = "https://github.com/YOUR-USERNAME/YOUR-REPO/releases/download/v1.0/vit_vitamin_model.pth"
+    cnn_url = "https://github.com/abhinandk05/Vitamin_Deficiency_Project/releases/download/v1.0/cnn_vitamin_model.pth"
+    vit_url = "https://github.com/abhinandk05/Vitamin_Deficiency_Project/releases/download/v1.0/vit_vitamin_model.pth"
 
     # --- 1. Safely Download CNN ---
     if not os.path.exists(cnn_path):
