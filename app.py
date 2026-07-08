@@ -17,24 +17,54 @@ st.set_page_config(page_title="DeficiVision Analyzer", page_icon="👁️", layo
 # =====================================================================
 # 1. LOAD THE TRAINED HYBRID MODELS
 # =====================================================================
-@st.cache_resource # Prevents reloading the model every time the app updates
+@st.cache_resource 
 def load_models():
-    # Rebuild CNN Architecture
-    cnn = models.resnet50(weights=None)
-    num_features_cnn = cnn.fc.in_features
-    cnn.fc = nn.Sequential(nn.Linear(num_features_cnn, 256), nn.ReLU(), nn.Dropout(0.3), nn.Linear(256, 6))
+    cnn_path = 'cnn_vitamin_model.pth'
+    vit_path = 'vit_vitamin_model.pth'
     
-    # Rebuild ViT Architecture
-    vit = timm.create_model('vit_base_patch16_224', pretrained=False)
-    num_features_vit = vit.head.in_features
-    vit.head = nn.Sequential(nn.Linear(num_features_vit, 256), nn.ReLU(), nn.Dropout(0.3), nn.Linear(256, 6))
-    
-    # Load weights safely
-    cnn.load_state_dict(torch.load('cnn_vitamin_model.pth', map_location=torch.device('cpu'), weights_only=True))
-    vit.load_state_dict(torch.load('vit_vitamin_model.pth', map_location=torch.device('cpu'), weights_only=True))
-    
-    cnn.eval()
-    vit.eval()
+    # ⚠️ PASTE YOUR EXACT GITHUB RELEASE LINKS HERE
+    cnn_url = "https://github.com/YOUR-USERNAME/YOUR-REPO/releases/download/v1.0/cnn_vitamin_model.pth"
+    vit_url = "https://github.com/YOUR-USERNAME/YOUR-REPO/releases/download/v1.0/vit_vitamin_model.pth"
+
+    # --- 1. Safely Download CNN ---
+    if not os.path.exists(cnn_path):
+        try:
+            st.warning(f"Downloading CNN model from GitHub... This might take a minute.")
+            urllib.request.urlretrieve(cnn_url, cnn_path)
+        except Exception as e:
+            st.error(f"🛑 CRITICAL ERROR: Failed to download CNN model. Details: {e}")
+            st.stop() # Stops the app from crashing further
+
+    # --- 2. Safely Download ViT ---
+    if not os.path.exists(vit_path):
+        try:
+            st.warning(f"Downloading ViT model from GitHub... This might take a minute.")
+            urllib.request.urlretrieve(vit_url, vit_path)
+        except Exception as e:
+            st.error(f"🛑 CRITICAL ERROR: Failed to download ViT model. Details: {e}")
+            st.stop() # Stops the app from crashing further
+
+    # --- 3. Rebuild and Load CNN ---
+    try:
+        cnn = models.resnet50(weights=None)
+        num_features_cnn = cnn.fc.in_features
+        cnn.fc = nn.Sequential(nn.Linear(num_features_cnn, 256), nn.ReLU(), nn.Dropout(0.3), nn.Linear(256, 6))
+        cnn.load_state_dict(torch.load(cnn_path, map_location=torch.device('cpu'), weights_only=True))
+        cnn.eval()
+    except Exception as e:
+        st.error(f"🛑 ERROR: CNN model downloaded, but failed to load. Details: {e}")
+        st.stop()
+
+    # --- 4. Rebuild and Load ViT ---
+    try:
+        vit = timm.create_model('vit_base_patch16_224', pretrained=False)
+        num_features_vit = vit.head.in_features
+        vit.head = nn.Sequential(nn.Linear(num_features_vit, 256), nn.ReLU(), nn.Dropout(0.3), nn.Linear(256, 6))
+        vit.load_state_dict(torch.load(vit_path, map_location=torch.device('cpu'), weights_only=True))
+        vit.eval()
+    except Exception as e:
+        st.error(f"🛑 ERROR: ViT model downloaded, but failed to load. Details: {e}")
+        st.stop()
     
     return cnn, vit
 
