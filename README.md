@@ -8,6 +8,12 @@ An AI-powered diagnostic prototype utilizing a hybrid ResNet50 (CNN) and Vision 
 * **Interactive UI:** Built with Streamlit for a clean, clinical-style dashboard including dynamic health recommendations.
 
 
+**Download the Dataset**
+The clinical image dataset used to train and test this model is hosted on Google Drive. 
+* Download the dataset here: https://drive.google.com/drive/folders/1jdH91I3-OIAt8_OEoTI3Ros9SlsruBNv?usp=sharing
+  
+*Note: Extract the downloaded folder into the root directory of this project before running any training scripts.*
+
 Data Preprocessing:
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)]https://colab.research.google.com/drive/1IH-GrV-vws17cKrSW70hU1Y0RCOphOBD?usp=sharing
 
