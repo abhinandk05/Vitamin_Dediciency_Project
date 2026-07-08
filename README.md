@@ -7,6 +7,19 @@ An AI-powered diagnostic prototype utilizing a hybrid ResNet50 (CNN) and Vision 
 * **Soft-Voting Ensemble:** Averages probability maps to output high-confidence predictions.
 * **Interactive UI:** Built with Streamlit for a clean, clinical-style dashboard including dynamic health recommendations.
 
+
+Data Preprocessing:
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)]https://colab.research.google.com/drive/1IH-GrV-vws17cKrSW70hU1Y0RCOphOBD?usp=sharing
+
+CNN_Training:
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)]https://colab.research.google.com/drive/1cvr1cGbCkZBtGjP05Co5EodL0rnc9201?usp=sharing
+
+ViT_Training:
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)]https://colab.research.google.com/drive/1padvTC3i6JZ9o9dKjPdTUh8HFhweMEuI?usp=sharing
+
+Hybrid_Integration:
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)]https://colab.research.google.com/drive/1YBbPkAjHKXMHgfCKOWctcwndS5ft29wF?usp=sharing
+
 ## Installation & Setup
 
 1. Clone the repository
@@ -26,14 +39,4 @@ Download vit_vitamin_model.pth here: https://drive.google.com/file/d/1vHg0QHWgEJ
 4. Run the Application
 streamlit run app.py
 
-Data Preprocessing:
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)]https://colab.research.google.com/drive/1IH-GrV-vws17cKrSW70hU1Y0RCOphOBD?usp=sharing
 
-CNN_Training:
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)]https://colab.research.google.com/drive/1cvr1cGbCkZBtGjP05Co5EodL0rnc9201?usp=sharing
-
-ViT_Training:
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)]https://colab.research.google.com/drive/1padvTC3i6JZ9o9dKjPdTUh8HFhweMEuI?usp=sharing
-
-Hybrid_Integration:
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)]https://colab.research.google.com/drive/1YBbPkAjHKXMHgfCKOWctcwndS5ft29wF?usp=sharing
