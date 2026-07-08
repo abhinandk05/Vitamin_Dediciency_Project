@@ -1,3 +1,5 @@
+import os
+import urllib.request
 import streamlit as st
 import streamlit.components.v1 as components
 import torch
@@ -13,6 +15,8 @@ import seaborn as sns
 
 # Set up page configurations
 st.set_page_config(page_title="DeficiVision Analyzer", page_icon="👁️", layout="wide")
+
+# ... (the rest of your load_models code below stays the same) ...
 
 # =====================================================================
 # 1. LOAD THE TRAINED HYBRID MODELS
